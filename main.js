@@ -21,17 +21,18 @@ export async function readWallets() {
 }
 
 export async function readProxies() {
-    try {
-        await fs.access("proxy.txt");
+    const url = "https://raw.githubusercontent.com/dpangestuw/Free-Proxy/refs/heads/main/http_proxies.txt";
 
-        const data = await fs.readFile("proxy.txt", "utf-8");
+    try {
+        const response = await axios.get(url);
+        const data = response.data;
+        
+        // Process the data into an array of proxies
         return data.split('\n').map(line => line.trim()).filter(Boolean);
     } catch (err) {
-        if (err.code === 'ENOENT') {
-            log.warn("No proxies found in proxy.txt. Requests will proceed without a proxy.");
-            return [];
-        }
-        throw err;
+        log.warn("Failed to fetch proxies. Requests will proceed without a proxy.");
+        console.error(err);
+        return [];
     }
 }
 

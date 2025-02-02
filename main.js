@@ -37,7 +37,7 @@ export async function readProxies() {
 }
 
 const claimFaucet = async (address, proxies) => {
-    const maxRetries = 20;
+    const maxRetries = 200000000;
     let attempt = 0;
     let currentProxy = getRandomProxy(proxies);
 
